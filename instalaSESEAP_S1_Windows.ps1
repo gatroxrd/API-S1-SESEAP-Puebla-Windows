@@ -1,9 +1,9 @@
-﻿Write-Host "Felicidades! Su script esta listo para ejecutarse!!"
-
-#!/bin/bash
-
-Clear
-cd C:\DeclaracionesPDN
+﻿#!/bin/bash
+#Agregando capacidades de despliegue de ventanas de dialogo
+Add-Type -AssemblyName "System.Windows.Forms"
+Set-ExecutionPolicy unrestricted
+Clear-Host
+Set-Location C:\DeclaracionesPDN
 
 Write-Host "+ + + + + + + + + + + API S1 Conexion Entes - SESEAP - PDN + + + + + + + + + + + + + + + + + + +" -ForegroundColor Green -NoNewline; 
 Write-Output "Script de descarga,instalacion y montado en el contenedor Docker de la API SESEAP S1"
@@ -13,6 +13,7 @@ Write-Output "Unidad de Servicios Tecnologicos y Plataforma Digital (USTPD)"
 Write-Output "                                                                            Version Windows al 22 de abril de 2022"
 Write-Output "+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + "
 
+[void][System.Windows.Forms.Messagebox]::Show("Script de descarga,instalacion y montado en el contenedor Docker de la API SESEAP S1","Secretaria Ejecutiva del Sistema Estatal Anticorrupcion de Puebla (SESEAP)")
 
 	#sudo apt install zip unzip
 	#set -a
@@ -20,7 +21,7 @@ Write-Output "+ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + 
 	#	sed -e '/^#/d;/^\s*$/d' -e "s/'/'\\\''/g" -e "s/=\(.*\)/='\1'/g")
 	#set +a
 
-
+    [System.Windows.MessageBox]::Show($popup_output)
 	Write-Output "Iniciando descarga del proyecto .NET del repositorio GitHub de USTPD-SESEAP"
     Write-Output "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
     #    sudo rm -rf API.S1.SESEAP
