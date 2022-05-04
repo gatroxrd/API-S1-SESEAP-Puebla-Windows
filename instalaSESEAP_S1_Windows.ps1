@@ -231,7 +231,7 @@ function MontandoDocker {
 	Write-Output "= = = = = = = = = = = = = = = = = = = = = = = P A S O  3 = = = = = = = = = = = = = = = = = = = = = = ="
 	Write-Output "ID de la imagen dentro del contenedor Docker es:"
 	#sudo docker run --restart always --name dotnet -p $PORT_HOSTNAME:80 -d dotnet
-    docker run --name dotnet -p $PORT_HOSTNAME:80  dotnet
+    docker run dotnet -p 8095:80  dotnet
 	Write-Output "En adelante usted puede abrir en cualquier navegador de su red local la API capturando la url con la ip de su equipo mÃ¡s el puerto ${puerto}"
 	Write-Output ""
 
