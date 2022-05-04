@@ -127,10 +127,10 @@ function GenerateForm {
 
     $radioButton1.UseVisualStyleBackColor = $True
     $System_Drawing_Size = New-Object System.Drawing.Size
-    $System_Drawing_Size.Width = 104
+    $System_Drawing_Size.Width = 130
     $System_Drawing_Size.Height = 24
     $radioButton1.Size = $System_Drawing_Size
-    $radioButton1.Location = new System.Drawing.Point(4, 18);
+    $radioButton1.Location = new System.Drawing.Point(27, 90);
     $radioButton1.Name = "radioButton1";
     $radioButton1.RightToLeft = System.Windows.Forms.RightToLeft.No;
     $radioButton1.Size = new System.Drawing.Size(382, 23);
