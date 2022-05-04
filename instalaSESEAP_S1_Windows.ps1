@@ -25,8 +25,8 @@ function GenerateForm {
         if ($radioButton1.Checked)   
          {
               $listBox1.Items.Clear()
-              ObtenAPI.NET
-              MontandoDocker
+              ObtenAPI.NET;
+              MontandoDocker;
          } 
          else 
          {
@@ -98,7 +98,6 @@ function GenerateForm {
     $System_Drawing_Size.Height = 30
     $radioButton1.Size = $System_Drawing_Size
     $radioButton1.TabIndex = 3;
-    $radioButton1.TabStop = true;
     $radioButton1.Text = ""
     $radioButton1.Text = "Instalación básica por parametrosConfiguracion.txt";
     $radioButton1.UseVisualStyleBackColor = true;
@@ -209,6 +208,7 @@ function ObtenAPI.NET {
 }
 
 function MontandoDocker {
+    [void][System.Windows.Forms.Messagebox]::Show("Ahora se creará y montará la imagen DotNet en el Docker de su equipo.","Montando la API.NET en Docker")
  	#Write-Output "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="
 	#Write-Output "Iniciando despliegue de la API Microsoft .NET"
     $listBox1.Items.Add("        MONTANDO IMAGEN DOCKER  ")
@@ -231,7 +231,7 @@ function MontandoDocker {
 	Write-Output "= = = = = = = = = = = = = = = = = = = = = = = P A S O  3 = = = = = = = = = = = = = = = = = = = = = = ="
 	Write-Output "ID de la imagen dentro del contenedor Docker es:"
 	#sudo docker run --restart always --name dotnet -p $PORT_HOSTNAME:80 -d dotnet
-    docker run dotnet -p 8095:80  dotnet
+    docker run -d -p 8095:80  dotnet
 	Write-Output "En adelante usted puede abrir en cualquier navegador de su red local la API capturando la url con la ip de su equipo mÃ¡s el puerto ${puerto}"
 	Write-Output ""
 
