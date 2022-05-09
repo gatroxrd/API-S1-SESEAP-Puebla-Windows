@@ -49,8 +49,8 @@ function GenerateForm {
               
               $label = New-Object System.Windows.Forms.Label
               $label.Location = New-Object System.Drawing.Point(10,20)
-              $label.Size = New-Object System.Drawing.Size(280,30)
-              $label.Text = 'Desea descargar la más reciente versión del proyecto API.NET'
+              $label.Size = New-Object System.Drawing.Size(280,60)
+              $label.Text = 'Desea descargar la más reciente versión del proyecto API.NET? Esta acción eliminará la versión previamente descargada y solo le dejará con la más reciente del proyecto API .NET'
               $form.Controls.Add($label)
               
               #$textBox = New-Object System.Windows.Forms.TextBox
@@ -60,7 +60,7 @@ function GenerateForm {
               
               $form.Topmost = $true
               
-              $form.Add_Shown({$textBox.Select()})
+              #$form.Add_Shown({$textBox.Select()})
               $result = $form.ShowDialog()
               if ($result -eq [System.Windows.Forms.DialogResult]::OK)
                     {
@@ -197,9 +197,10 @@ function descargaProyectoAPINET
     #Write-Output "Cargando y procesando el archivo con los parametros de Configuracion"
 }
 
-function extraeValoresParametrosConfig
+function chequeaDockerOnline
 {
-
+    Set-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Services\com.docker.windows DisplayName "Docker Engine for Windows"
+    Set-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Services\com.docker.windows Description "Windows Containers Server for Docker"
 }
 
 function extraeParametrosAppSettings {
@@ -298,7 +299,7 @@ function extraeParametrosAppSettings {
 function MontandoDocker($IP_HOSTNAME,$PORT_HOSTNAME) {
     [void][System.Windows.Forms.Messagebox]::Show("Ahora se creará y montará la imagen DotNet en el Docker de su equipo.","Montando la API.NET en Docker")
     Write-Output "${IP_HOSTNAME}:${PORT_HOSTNAME}"
-    Start-Service docker
+    chequeaDockerOnliner
     $listBox1.Items.Add("        MONTANDO IMAGEN DOCKER  ")
 	Write-Output "= = = = = = = = = = = = = = = = = = = = = = = P A S O  1 = = = = = = = = = = = = = = = = = = = = = = ="
 	Write-Output "Eliminando imagen previa del contenedor Docker llamada:" 
