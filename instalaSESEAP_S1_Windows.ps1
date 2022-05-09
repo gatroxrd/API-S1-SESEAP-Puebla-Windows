@@ -300,7 +300,7 @@ function extraeParametrosAppSettings {
 function MontandoDocker($IP_HOSTNAME,$PORT_HOSTNAME) {
     [void][System.Windows.Forms.Messagebox]::Show("Ahora se creará y montará la imagen DotNet en el Docker de su equipo.","Montando la API.NET en Docker")
     Write-Output "${IP_HOSTNAME}:${PORT_HOSTNAME}"
-    chequeaDockerOnliner
+    #chequeaDockerOnliner
     $listBox1.Items.Add("        MONTANDO IMAGEN DOCKER  ")
 	Write-Output "= = = = = = = = = = = = = = = = = = = = = = = P A S O  1 = = = = = = = = = = = = = = = = = = = = = = ="
 	Write-Output "Eliminando imagen previa del contenedor Docker llamada:" 
@@ -308,7 +308,7 @@ function MontandoDocker($IP_HOSTNAME,$PORT_HOSTNAME) {
     Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
     try
     {
-        docker rm -f dotnet
+        sudo docker rm -f dotnet
         $listBox1.Items.Add("Buscando y eliminando versiones previas")
     }
     catch
