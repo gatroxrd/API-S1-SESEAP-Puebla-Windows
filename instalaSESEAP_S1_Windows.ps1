@@ -25,8 +25,56 @@ function GenerateForm {
         if ($radioButton1.Checked)   
          {
               $listBox1.Items.Clear()
-              ObtenAPI.NET;
-              MontandoDocker;
+
+              $form = New-Object System.Windows.Forms.Form
+              $form.Text = 'Descargar Proyecto .NET'
+              $form.Size = New-Object System.Drawing.Size(300,200)
+              $form.StartPosition = 'CenterScreen'
+              
+              $okButton = New-Object System.Windows.Forms.Button
+              $okButton.Location = New-Object System.Drawing.Point(75,120)
+              $okButton.Size = New-Object System.Drawing.Size(75,23)
+              $okButton.Text = 'Descargar'
+              $okButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+              $form.AcceptButton = $okButton
+              $form.Controls.Add($okButton)
+              
+              $cancelButton = New-Object System.Windows.Forms.Button
+              $cancelButton.Location = New-Object System.Drawing.Point(150,120)
+              $cancelButton.Size = New-Object System.Drawing.Size(75,23)
+              $cancelButton.Text = 'Continuar'
+              $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+              $form.CancelButton = $cancelButton
+              $form.Controls.Add($cancelButton)
+              
+              $label = New-Object System.Windows.Forms.Label
+              $label.Location = New-Object System.Drawing.Point(10,20)
+              $label.Size = New-Object System.Drawing.Size(280,30)
+              $label.Text = 'Desea descargar la más reciente versión del proyecto API.NET'
+              $form.Controls.Add($label)
+              
+              #$textBox = New-Object System.Windows.Forms.TextBox
+              #$textBox.Location = New-Object System.Drawing.Point(10,40)
+              #$textBox.Size = New-Object System.Drawing.Size(260,20)
+              #$form.Controls.Add($textBox)
+              
+              $form.Topmost = $true
+              
+              $form.Add_Shown({$textBox.Select()})
+              $result = $form.ShowDialog()
+              if ($result -eq [System.Windows.Forms.DialogResult]::OK)
+                    {
+                        eliminaProyectoAPINET; 
+                        descargaProyectoAPINET;
+                        extraeParametrosAppSettings;
+                        MontandoDocker $IP_HOSTNAME $PORT_HOSTNAME
+                        $listBox1.Items.Add("Lanzando montando de Docker")
+                    }
+              else
+              {
+
+              }
+
          } 
          else 
          {
@@ -49,6 +97,7 @@ function GenerateForm {
     $System_Drawing_Size.Width = 600
     $System_Drawing_Size.Height = 250
     $form1.ClientSize = $System_Drawing_Size
+    $form1.StartPosition = 'CenterScreen'
     
     $button1.TabIndex = 4
     $button1.Name = "button1"
@@ -100,8 +149,7 @@ function GenerateForm {
     $radioButton1.TabIndex = 3;
     $radioButton1.Text = ""
     $radioButton1.Text = "Instalación básica por parametrosConfiguracion.txt";
-    $radioButton1.UseVisualStyleBackColor = true;
-    #$radioButton1.CheckedChanged += new System.EventHandler($radioButton1_CheckedChanged);
+    $radioButton1.UseVisualStyleBackColor = $True;
 
     $form1.Controls.Add($radioButton1)
     
@@ -119,22 +167,23 @@ function GenerateForm {
 #Call the Function
 GenerateForm
 
-function ObtenAPI.NET {
-    
-    #[void][System.Windows.Forms.Messagebox]::Show("Script de descarga,instalacion y montado del contenedor Docker de la API SESEAP S1. Desarrollado por la Unidad de Servicios Tecnológicos y Plataforma Digital","Secretaria Ejecutiva del Sistema Estatal Anticorrupcion de Puebla (SESEAP)")
-    [void][System.Windows.Forms.Messagebox]::Show("Iniciar descarga del proyecto .NET desde el repositorio GitHub de la Unidad de Servicios Tecnológicos y Plataforma Digital Puebla.","Descarga del proyecto API.NET")
-	#Write-Output "Iniciando descarga del proyecto .NET del repositorio GitHub de USTPD-SESEAP"
-    $listBox1.Items.Add("        DESCARGA GITHUB --> API.NET ")   
+function eliminaProyectoAPINET{
     try
     {
-        $listBox1.Items.Add("Eliminando archivos previos de la API")
         Remove-Item -Recurse -Force c:\DeclaracionesPDN\API.S1.SESEAP
+        $listBox1.Items.Add("Eliminando archivos previos de la API")       
     }
     catch
-    {}
+    { 
+    }
 	#mkdir API.S1.SESEAP
 	New-Item -Path "c:\DeclaracionesPDN" -Name "API.S1.SESEAP" -ItemType "directory"
-	Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
+}
+
+function descargaProyectoAPINET
+{
+    Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
+    $listBox1.Items.Add("Iniciando descarga de API.NET")
 	Invoke-WebRequest -Uri https://github.com/gatroxrd/API-S1-SESEAP-Puebla/raw/main/PDEPuebla.S1.PDN.zip -OutFile PDEPuebla.S1.PDN.zip
 	#Write-Output "Descomprimiendo archivos descargados"
     $listBox1.Items.Add("Archivo .zip con la API.NET descargado")
@@ -146,8 +195,46 @@ function ObtenAPI.NET {
 	#rm  PDEPuebla.S1.PDN.zip
     Remove-Item -Recurse -Force C:\DeclaracionesPDN\API.S1.SESEAP\PDEPuebla.S1.PDN.zip
     #Write-Output "Cargando y procesando el archivo con los parametros de Configuracion"
-    $listBox1.Items.Add("Extrayendo valores y configurando appSettings.json")
+}
+
+function extraeValoresParametrosConfig
+{
+
+}
+
+function extraeParametrosAppSettings {
+    
+    #[void][System.Windows.Forms.Messagebox]::Show("Script de descarga,instalacion y montado del contenedor Docker de la API SESEAP S1. Desarrollado por la Unidad de Servicios Tecnológicos y Plataforma Digital","Secretaria Ejecutiva del Sistema Estatal Anticorrupcion de Puebla (SESEAP)")
+    [void][System.Windows.Forms.Messagebox]::Show("Iniciar descarga del proyecto .NET desde el repositorio GitHub de la Unidad de Servicios Tecnológicos y Plataforma Digital Puebla.","Descarga del proyecto API.NET")
+	#Write-Output "Iniciando descarga del proyecto .NET del repositorio GitHub de USTPD-SESEAP"
+    $listBox1.Items.Add("        DESCARGA GITHUB --> API.NET ")   
+    #try
+    #{
+       # Remove-Item -Recurse -Force c:\DeclaracionesPDN\API.S1.SESEAP
+       # $listBox1.Items.Add("Eliminando archivos previos de la API")       
+    #}
+    #catch
+    #{ 
+    #}
+	#mkdir API.S1.SESEAP
+	#New-Item -Path "c:\DeclaracionesPDN" -Name "API.S1.SESEAP" -ItemType "directory"
+
+	#Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
+    #$listBox1.Items.Add("Iniciando descarga de API.NET")
+	#Invoke-WebRequest -Uri https://github.com/gatroxrd/API-S1-SESEAP-Puebla/raw/main/PDEPuebla.S1.PDN.zip -OutFile PDEPuebla.S1.PDN.zip
+	#Write-Output "Descomprimiendo archivos descargados"
+    #$listBox1.Items.Add("Archivo .zip con la API.NET descargado")
+    #$listBox1.Items.Add("Descomprimiendo archivos en c:\DeclaracionesPDN")
+	
+	#Expand-Archive -LiteralPath 'c:\DeclaracionesPDN\API.S1.SESEAP\PDEPuebla.S1.PDN.zip' -DestinationPath 'C:\DeclaracionesPDN\API.S1.SESEAP'
+	#Write-Output "Eliminando archivo .zip"
+    #$listBox1.Items.Add("Eliminando archivo .zip")
+	#rm  PDEPuebla.S1.PDN.zip
+    #Remove-Item -Recurse -Force C:\DeclaracionesPDN\API.S1.SESEAP\PDEPuebla.S1.PDN.zip
+    #Write-Output "Cargando y procesando el archivo con los parametros de Configuracion"
+    #$listBox1.Items.Add("Extrayendo valores y configurando appSettings.json")
     #Obteniendo valores del archivo de parametros de configuraciÃ³n
+    
 
     $content = Get-Content -Path 'c:\DeclaracionesPDN\parametrosConfiguracion.txt';
     
@@ -164,12 +251,12 @@ function ObtenAPI.NET {
     $temporal = $content | Where-Object {$_ -like "clientScopeRead=*" }
     $clientLectura = $temporal -replace 'clientScopeRead=',''
 	#sed -i "s/valorLectura/$clientLectura/g" appsettings.json
-    (Get-Content -path C:\DeclaracionesPDN\API.S1.SESEAP\appsettings.json -Raw) -replace 'clientScopeRead',$clientLectura | Set-Content .\appsettings.json
+    (Get-Content -path C:\DeclaracionesPDN\API.S1.SESEAP\appsettings.json -Raw) -replace 'clientScopeRead',"read:${clientLectura}" | Set-Content .\appsettings.json
 
     $temporal = $content | Where-Object {$_ -like "clientScopeWrite=*" }
     $clientEscritura = $temporal -replace 'clientScopeWrite=',''
 	#sed -i "s/valorEscritura/$clientEscritura/g" appsettings.json
-    (Get-Content -path C:\DeclaracionesPDN\API.S1.SESEAP\appsettings.json -Raw) -replace 'clientScopeWrite',$clientEscritura | Set-Content .\appsettings.json
+    (Get-Content -path C:\DeclaracionesPDN\API.S1.SESEAP\appsettings.json -Raw) -replace 'clientScopeWrite',"write:${clientEscritura}" | Set-Content .\appsettings.json
 
     $temporal = $content | Where-Object {$_ -like "mongoHostname=*" }
     $IP_HOSTNAME = $temporal -replace 'mongoHostname=',''
@@ -205,14 +292,14 @@ function ObtenAPI.NET {
     (Get-Content -path C:\DeclaracionesPDN\API.S1.SESEAP\appsettings.json -Raw) -replace 'mongoPort',$mongoPort | Set-Content .\appsettings.json
 
     $listBox1.Items.Add("Archivo appSettings.json ya fue configurado")
+    return $PORT_HOSTNAME, $IP_HOSTNAME
 }
 
-function MontandoDocker {
+function MontandoDocker($IP_HOSTNAME,$PORT_HOSTNAME) {
     [void][System.Windows.Forms.Messagebox]::Show("Ahora se creará y montará la imagen DotNet en el Docker de su equipo.","Montando la API.NET en Docker")
- 	#Write-Output "= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="
-	#Write-Output "Iniciando despliegue de la API Microsoft .NET"
+    Write-Output "${IP_HOSTNAME}:${PORT_HOSTNAME}"
+    Start-Service docker
     $listBox1.Items.Add("        MONTANDO IMAGEN DOCKER  ")
-
 	Write-Output "= = = = = = = = = = = = = = = = = = = = = = = P A S O  1 = = = = = = = = = = = = = = = = = = = = = = ="
 	Write-Output "Eliminando imagen previa del contenedor Docker llamada:" 
 	#sudo docker rm -f 
@@ -220,24 +307,27 @@ function MontandoDocker {
     try
     {
         docker rm -f dotnet
+        $listBox1.Items.Add("Buscando y eliminando versiones previas")
     }
-    catch{
-        Write-Output "Imagen dotnet preexistente no encontrada"
+    catch
+    {
+        $listBox1.Items.Add("No habia versiones previas")
     }
 	Write-Output "= = = = = = = = = = = = = = = = = = = = = = = P A S O  2 = = = = = = = = = = = = = = = = = = = = = = ="
-	Write-Output "Construyendo la imagen a partir del proyecto .NET"	
 	#sudo docker build -t dotnet -f Dockerfile .
     docker build -t dotnet -f Dockerfile .
+ 	Write-Output "Construyendo la imagen a partir del proyecto .NET"   
+    #docker start dotnet
+    $listBox1.Items.Add("Contruyendo imagen Docker desde Dockerfile")
 	Write-Output "= = = = = = = = = = = = = = = = = = = = = = = P A S O  3 = = = = = = = = = = = = = = = = = = = = = = ="
 	Write-Output "ID de la imagen dentro del contenedor Docker es:"
 	#sudo docker run --restart always --name dotnet -p $PORT_HOSTNAME:80 -d dotnet
-    docker run -d -p 8095:80  dotnet
-	Write-Output "En adelante usted puede abrir en cualquier navegador de su red local la API capturando la url con la ip de su equipo mÃ¡s el puerto ${puerto}"
-	Write-Output ""
-
-
-	Write-Output  "                            C O N E X I O N   E S T A B L E C I D A!"
-	Write-Output  "________________________________________________________________________________________________________________________________"   
+    docker run  dotnet ${PORT_HOSTNAME}:80 
+    $listBox1.Items.Add("Montando imagen en el contenedor Docker")
+    [system.Diagnostics.Process]::Start("msedge","${IP_HOSTNAME}:${PORT_HOSTNAME}")
+    exit
+	#Write-Output  "                            C O N E X I O N   E S T A B L E C I D A!"
+ 
 }
 
 
