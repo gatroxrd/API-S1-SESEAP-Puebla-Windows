@@ -68,8 +68,8 @@ function GenerateForm {
                         descargaProyectoAPINET;
                         extraeParametrosAppSettings;
                         MontandoDocker $IP_HOSTNAME $PORT_HOSTNAME
-                        $listBox1.Items.Add("Lanzando montando de Docker")
-                        [void][System.Windows.Forms.Messagebox]::Show("La API del proyecto .NET de la Unidad de Servicios Tecnológicos y Plataforma Digital Puebla. se instalo exitosamente","API.NET instalada exitosamente")
+                        #$listBox1.Items.Add("Lanzando montando de Docker")
+                        #[void][System.Windows.Forms.Messagebox]::Show("La API del proyecto .NET de la Unidad de Servicios Tecnológicos y Plataforma Digital Puebla. se instalo exitosamente","API.NET instalada exitosamente")
                     }
               else
               {
@@ -324,12 +324,10 @@ function MontandoDocker($IP_HOSTNAME,$PORT_HOSTNAME) {
 	Write-Output "= = = = = = = = = = = = = = = = = = = = = = = P A S O  3 = = = = = = = = = = = = = = = = = = = = = = ="
 	Write-Output "ID de la imagen dentro del contenedor Docker es:"
 	#sudo docker run --restart always --name dotnet -p $PORT_HOSTNAME:80 -d dotnet
-    docker run  --name dotnet ${PORT_HOSTNAME}:80 
+    docker run --pull always --name dotnet ${PORT_HOSTNAME}:80 
     $listBox1.Items.Add("Montando imagen en el contenedor Docker")
     [system.Diagnostics.Process]::Start("msedge","${IP_HOSTNAME}:${PORT_HOSTNAME}")
-    exit
-	#Write-Output  "                            C O N E X I O N   E S T A B L E C I D A!"
- 
+    #[void][System.Windows.Forms.Messagebox]::Show("La imagen DotNet esta montada en su Docker y la API.NET funcionando.","API.NET instalada")
 }
 
 
