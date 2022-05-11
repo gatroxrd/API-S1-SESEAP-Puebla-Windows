@@ -215,37 +215,8 @@ function chequeaDockerOnline
 
 function extraeParametrosAppSettings {
     
-    #[void][System.Windows.Forms.Messagebox]::Show("Script de descarga,instalacion y montado del contenedor Docker de la API SESEAP S1. Desarrollado por la Unidad de Servicios Tecnológicos y Plataforma Digital","Secretaria Ejecutiva del Sistema Estatal Anticorrupcion de Puebla (SESEAP)")
     [void][System.Windows.Forms.Messagebox]::Show("Iniciar descarga del proyecto .NET desde el repositorio GitHub de la Unidad de Servicios Tecnológicos y Plataforma Digital Puebla.","Descarga del proyecto API.NET")
-	#Write-Output "Iniciando descarga del proyecto .NET del repositorio GitHub de USTPD-SESEAP"
     $listBox1.Items.Add("        DESCARGA GITHUB --> API.NET ")   
-    #try
-    #{
-       # Remove-Item -Recurse -Force c:\DeclaracionesPDN\API.S1.SESEAP
-       # $listBox1.Items.Add("Eliminando archivos previos de la API")       
-    #}
-    #catch
-    #{ 
-    #}
-	#mkdir API.S1.SESEAP
-	#New-Item -Path "c:\DeclaracionesPDN" -Name "API.S1.SESEAP" -ItemType "directory"
-
-	#Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
-    #$listBox1.Items.Add("Iniciando descarga de API.NET")
-	#Invoke-WebRequest -Uri https://github.com/gatroxrd/API-S1-SESEAP-Puebla/raw/main/PDEPuebla.S1.PDN.zip -OutFile PDEPuebla.S1.PDN.zip
-	#Write-Output "Descomprimiendo archivos descargados"
-    #$listBox1.Items.Add("Archivo .zip con la API.NET descargado")
-    #$listBox1.Items.Add("Descomprimiendo archivos en c:\DeclaracionesPDN")
-	
-	#Expand-Archive -LiteralPath 'c:\DeclaracionesPDN\API.S1.SESEAP\PDEPuebla.S1.PDN.zip' -DestinationPath 'C:\DeclaracionesPDN\API.S1.SESEAP'
-	#Write-Output "Eliminando archivo .zip"
-    #$listBox1.Items.Add("Eliminando archivo .zip")
-	#rm  PDEPuebla.S1.PDN.zip
-    #Remove-Item -Recurse -Force C:\DeclaracionesPDN\API.S1.SESEAP\PDEPuebla.S1.PDN.zip
-    #Write-Output "Cargando y procesando el archivo con los parametros de Configuracion"
-    #$listBox1.Items.Add("Extrayendo valores y configurando appSettings.json")
-    #Obteniendo valores del archivo de parametros de configuraciÃ³n
-    
 
     $content = Get-Content -Path 'c:\DeclaracionesPDN\parametrosConfiguracion.txt';
     
@@ -326,9 +297,9 @@ function MontandoDocker {
     $listBox1.Items.Add("Contruyendo imagen Docker desde Dockerfile en el puerto ${PORT_HOSTNAME}")
 	#sudo docker run --restart always --name dotnet -p $PORT_HOSTNAME:80 -d dotnet
     $listBox1.Items.Add("Montando imagen en el contenedor Docker")
-    [system.Diagnostics.Process]::Start("msedge","192.168.1.105:8098")
+    [system.Diagnostics.Process]::Start("msedge","192.168.1.215:8087")
     [void][System.Windows.Forms.Messagebox]::Show("La imagen DotNet esta montada en su Docker y la API.NET funcionando.","API.NET instalada")
-    docker run --name dotnet -p 8098:80 -d dotnet
+    docker run --name dotnet -p 8097:80 -d dotnet
     break
     
 }
