@@ -73,8 +73,7 @@ function GenerateForm {
                         descargaProyectoAPINET;
                         extraeParametrosAppSettings;
                         MontandoDocker;
-                        #$listBox1.Items.Add("Lanzando monPues fijate que yo digo que no....tando de Docker")
-                        #[void][System.Windows.Forms.Messagebox]::Show("La API del proyecto .NET de la Unidad de Servicios Tecnológicos y Plataforma Digital Puebla. se instalo exitosamente","API.NET instalada exitosamente")
+                        break;
                     }
               else
               {
@@ -303,36 +302,29 @@ function extraeParametrosAppSettings {
 }
 
 function MontandoDocker {
-    [void][System.Windows.Forms.Messagebox]::Show("Ahora se creará y montará la imagen DotNet en el Docker de su equipo.","Montando la API.NET en Docker")
-    Write-Output "${IP_HOSTNAME}:${PORT_HOSTNAME}"
-    #chequeaDockerOnliner
+    [void][System.Windows.Forms.Messagebox]::Show("Ahora se creará y montará la imagen DotNet en el Docker de su equipo. quedará anclado en la url ${IP_HOSTNAME}:${PORT_HOSTNAME}","Montando la API.NET en Docker")
+    #Write-Output "${IP_HOSTNAME}:${PORT_HOSTNAME}"
     $listBox1.Items.Add("        MONTANDO IMAGEN DOCKER  ")
-	Write-Output "= = = = = = = = = = = = = = = = = = = = = = = P A S O  1 = = = = = = = = = = = = = = = = = = = = = = ="
-	Write-Output "Eliminando imagen previa del contenedor Docker llamada:" 
 	#sudo docker rm -f 
     Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
     try
     {
-        Start-Job{docker rm -f dotnet}
+        docker image rm dotnet:latest -f
         $listBox1.Items.Add("Buscando y eliminando versiones previas")
     }
     catch
     {
         $listBox1.Items.Add("No habia versiones previas")
     }
-	Write-Output "= = = = = = = = = = = = = = = = = = = = = = = P A S O  2 = = = = = = = = = = = = = = = = = = = = = = ="
 	#sudo docker build -t dotnet -f Dockerfile .
-    Start-Job {docker build -t dotnet -f Dockerfile .}
- 	Write-Output "Construyendo la imagen a partir del proyecto .NET"   
-    #docker start dotnet
-    $listBox1.Items.Add("Contruyendo imagen Docker desde Dockerfile")
-	Write-Output "= = = = = = = = = = = = = = = = = = = = = = = P A S O  3 = = = = = = = = = = = = = = = = = = = = = = ="
-	Write-Output "ID de la imagen dentro del contenedor Docker es:"
+    docker build -t dotnet -f Dockerfile .
+    $listBox1.Items.Add("Contruyendo imagen Docker desde Dockerfile en el puerto ${PORT_HOSTNAME}")
 	#sudo docker run --restart always --name dotnet -p $PORT_HOSTNAME:80 -d dotnet
-    Start-Job {docker run --pull always --name dotnet ${PORT_HOSTNAME}:80}
     $listBox1.Items.Add("Montando imagen en el contenedor Docker")
-    [system.Diagnostics.Process]::Start("msedge","${IP_HOSTNAME}:${PORT_HOSTNAME}")
-    #[void][System.Windows.Forms.Messagebox]::Show("La imagen DotNet esta montada en su Docker y la API.NET funcionando.","API.NET instalada")
+    [system.Diagnostics.Process]::Start("msedge","192.168.1.105:8098")
+    [void][System.Windows.Forms.Messagebox]::Show("La imagen DotNet esta montada en su Docker y la API.NET funcionando.","API.NET instalada")
+    docker run --name dotnet -p 8098:80 -d dotnet
+    break
     
 }
 
