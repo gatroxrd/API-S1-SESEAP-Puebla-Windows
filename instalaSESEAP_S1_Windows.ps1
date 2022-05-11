@@ -72,7 +72,12 @@ function GenerateForm {
                         eliminaProyectoAPINET; 
                         descargaProyectoAPINET;
                         extraeParametrosAppSettings;
-                        MontandoDocker;
+                        try
+                        {
+                            MontandoDocker;
+                        }
+                        catch
+                        {}
                         break;
                     }
               else
