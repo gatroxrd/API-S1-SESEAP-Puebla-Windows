@@ -280,7 +280,7 @@ function MontandoDocker {
     try
     {
         docker image rm dotnet@latest -f
-        $listBox1.Items.Add("Buscando y eliminando versiones previas")
+        $listBox1.Items.Add("Buscando y eliminando imagenes previas en el Contenedor")
     }
     catch
     {
@@ -288,23 +288,25 @@ function MontandoDocker {
                 docker image rm dotnet -f
             }
             catch{
-                $listBox1.Items.Add("No habia versiones previas")
+                $listBox1.Items.Add("No habia imagenes previas")
             }
     }
 	#sudo docker build -t dotnet -f Dockerfile .
     docker build -t dotnet -f Dockerfile .
-    $listBox1.Items.Add("Contruyendo imagen Docker desde Dockerfile en el puerto ${PORT_HOSTNAME}")
+    $listBox1.Items.Add("Contruyendo imagen Docker desde Dockerfile")
 	#sudo docker run --restart always --name dotnet -p $PORT_HOSTNAME:80 -d dotnet
-    $listBox1.Items.Add("Montando imagen en el contenedor Docker")
+    $listBox1.Items.Add("Montando imagen dotnet en el contenedor Docker")
     try
     {
         docker run --name dotnet -p ${PORT_HOSTNAME}:80 -d dotnet
         [system.Diagnostics.Process]::Start("msedge","${IP_HOSTNAME}:${PORT_HOSTNAME}")
-        [void][System.Windows.Forms.Messagebox]::Show("La imagen DotNet esta montada en su Docker y la API.NET funcionando.","API.NET instalada")
+        [void][System.Windows.Forms.Messagebox]::Show("La imagen dotnet esta montada en su Docker y la API.NET funcionando.","API.NET instalada")
+        Set-Location c:\DeclaracionesPDN
         break
     }
     catch
     {
+        Set-Location c:\DeclaracionesPDN\
         break
     }
   
