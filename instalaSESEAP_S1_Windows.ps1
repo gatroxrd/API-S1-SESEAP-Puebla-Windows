@@ -24,9 +24,8 @@ function GenerateForm {
     $handler_button1_Click= 
     {
         Clear-Host  
-        Set-Location C:\DeclaracionesPDN
+        
         $listBox1.Items.Clear();    
-
         if ($radioButton1.Checked)   
          {
               $listBox1.Items.Clear()
@@ -76,7 +75,7 @@ function GenerateForm {
                     }
               else
               {
-
+                    extraeParametrosAppSettings;
               }
 
          } 
@@ -152,6 +151,7 @@ function GenerateForm {
     $radioButton1.Size = $System_Drawing_Size
     $radioButton1.TabIndex = 3;
     $radioButton1.Text = ""
+    $radioButton1.Font = New-Object System.Drawing.Font("Century Gothic",8,[System.Drawing.FontStyle]::Regular)
     $radioButton1.Text = "Instalación básica por parametrosConfiguracion.txt";
     $radioButton1.UseVisualStyleBackColor = $True;
 
@@ -163,7 +163,8 @@ function GenerateForm {
     #Init the OnLoad event to correct the initial state of the form
     $form1.add_Load($OnLoadForm_StateCorrection)
     #Show the Form
-    $form1.ShowDialog()| Out-Null
+    $form1.ShowDialog()
+   # | Out-Null
 
     
     } #End Function Generador del popup de presentación del Script
@@ -184,8 +185,7 @@ function eliminaProyectoAPINET{
 	New-Item -Path "c:\DeclaracionesPDN" -Name "API.S1.SESEAP" -ItemType "directory"
 }
 
-function descargaProyectoAPINET
-{
+function descargaProyectoAPINET{
     Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
     $listBox1.Items.Add("Iniciando descarga de API.NET")
 	Invoke-WebRequest -Uri https://github.com/gatroxrd/API-S1-SESEAP-Puebla/raw/main/PDEPuebla.S1.PDN.zip -OutFile PDEPuebla.S1.PDN.zip
@@ -200,7 +200,6 @@ function descargaProyectoAPINET
     Remove-Item -Recurse -Force C:\DeclaracionesPDN\API.S1.SESEAP\PDEPuebla.S1.PDN.zip
     #Write-Output "Cargando y procesando el archivo con los parametros de Configuracion"
 }
-
 
 function extraeParametrosAppSettings {
     Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
