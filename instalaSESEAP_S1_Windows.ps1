@@ -72,12 +72,6 @@ function GenerateForm {
                         eliminaProyectoAPINET; 
                         descargaProyectoAPINET;
                         extraeParametrosAppSettings;
-                        try
-                        {
-                            MontandoDocker;
-                        }
-                        catch
-                        {}
                         break;
                     }
               else
@@ -207,15 +201,10 @@ function descargaProyectoAPINET
     #Write-Output "Cargando y procesando el archivo con los parametros de Configuracion"
 }
 
-function chequeaDockerOnline
-{
-    Set-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Services\com.docker.windows DisplayName "Docker Engine for Windows"
-    Set-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Services\com.docker.windows Description "Windows Containers Server for Docker"
-}
 
 function extraeParametrosAppSettings {
-    
-    [void][System.Windows.Forms.Messagebox]::Show("Iniciar descarga del proyecto .NET desde el repositorio GitHub de la Unidad de Servicios Tecnológicos y Plataforma Digital Puebla.","Descarga del proyecto API.NET")
+    Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
+    #[void][System.Windows.Forms.Messagebox]::Show("Iniciar descarga del proyecto .NET desde el repositorio GitHub de la Unidad de Servicios Tecnológicos y Plataforma Digital Puebla.","Descarga del proyecto API.NET")
     $listBox1.Items.Add("        DESCARGA GITHUB --> API.NET ")   
 
     $content = Get-Content -Path 'c:\DeclaracionesPDN\parametrosConfiguracion.txt';
@@ -274,7 +263,12 @@ function extraeParametrosAppSettings {
     (Get-Content -path C:\DeclaracionesPDN\API.S1.SESEAP\appsettings.json -Raw) -replace 'mongoPort',$mongoPort | Set-Content .\appsettings.json
 
     $listBox1.Items.Add("Archivo appSettings.json ya fue configurado")
-    return $PORT_HOSTNAME, $IP_HOSTNAME
+    try
+                        {
+                            MontandoDocker;
+                        }
+    catch
+                        {}
 }
 
 function MontandoDocker {
@@ -282,7 +276,7 @@ function MontandoDocker {
     #Write-Output "${IP_HOSTNAME}:${PORT_HOSTNAME}"
     $listBox1.Items.Add("        MONTANDO IMAGEN DOCKER  ")
 	#sudo docker rm -f 
-    Set-Location c:\DeclaracionesPDN\
+    Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
     try
     {
         docker image rm dotnet@latest -f
@@ -290,18 +284,30 @@ function MontandoDocker {
     }
     catch
     {
-        $listBox1.Items.Add("No habia versiones previas")
+            try{
+                docker image rm dotnet -f
+            }
+            catch{
+                $listBox1.Items.Add("No habia versiones previas")
+            }
     }
 	#sudo docker build -t dotnet -f Dockerfile .
     docker build -t dotnet -f Dockerfile .
     $listBox1.Items.Add("Contruyendo imagen Docker desde Dockerfile en el puerto ${PORT_HOSTNAME}")
 	#sudo docker run --restart always --name dotnet -p $PORT_HOSTNAME:80 -d dotnet
     $listBox1.Items.Add("Montando imagen en el contenedor Docker")
-    docker run --name dotnet -p 8097:80 -d dotnet
-    [system.Diagnostics.Process]::Start("msedge","192.168.1.215:8097")
-    [void][System.Windows.Forms.Messagebox]::Show("La imagen DotNet esta montada en su Docker y la API.NET funcionando.","API.NET instalada")
-    break
-    
+    try
+    {
+        docker run --name dotnet -p ${PORT_HOSTNAME}:80 -d dotnet
+        [system.Diagnostics.Process]::Start("msedge","${IP_HOSTNAME}:${PORT_HOSTNAME}")
+        [void][System.Windows.Forms.Messagebox]::Show("La imagen DotNet esta montada en su Docker y la API.NET funcionando.","API.NET instalada")
+        break
+    }
+    catch
+    {
+        break
+    }
+  
 }
 
 
