@@ -119,7 +119,6 @@ function MontandoDocker {
     Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
     try
     {
-        docker start dotnet
         docker image rm dotnet -f
         $listBox1.Items.Add("Buscando y eliminando imagenes previas en el Contenedor")
     }
@@ -140,11 +139,10 @@ function MontandoDocker {
     $listBox1.Items.Add("Montando imagen dotnet en el contenedor Docker")
     try
     {
-        docker run --name dotnet -p ${PORT_HOSTNAME}:80 -d dotnet
-        docker start dotnet
+        docker run --name dotnet -p ${PORT_HOSTNAME}:80 -d dotnetp
         Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
-        [system.Diagnostics.Process]::Start("msedge","${IP_HOSTNAME}:${PORT_HOSTNAME}")
-        [void][System.Windows.Forms.Messagebox]::Show("La imagen dotnet esta montada en su Docker y la API.NET funcionando.","API.NET instalada")
+        #[system.Diagnostics.Process]::Start("msedge","${IP_HOSTNAME}:${PORT_HOSTNAME}")
+        #[void][System.Windows.Forms.Messagebox]::Show("La imagen dotnet esta montada en su Docker y la API.NET funcionando.","API.NET instalada")
         break
     }
     catch
