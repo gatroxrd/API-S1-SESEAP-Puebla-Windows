@@ -10,6 +10,7 @@ clear
 
 
 function eliminaProyectoAPINET{
+    Set-Location c:\DeclaracionesPDN
     try
     {
         Remove-Item -Recurse -Force c:\DeclaracionesPDN\API.S1.SESEAP
@@ -20,6 +21,8 @@ function eliminaProyectoAPINET{
     }
 	#mkdir API.S1.SESEAP
 	New-Item -Path "c:\DeclaracionesPDN" -Name "API.S1.SESEAP" -ItemType "directory"
+    descargaProyectoAPINET;
+                        
 }
 
 function descargaProyectoAPINET{
@@ -36,6 +39,7 @@ function descargaProyectoAPINET{
 	#rm  PDEPuebla.S1.PDN.zip
     Remove-Item -Recurse -Force C:\DeclaracionesPDN\API.S1.SESEAP\PDEPuebla.S1.PDN.zip
     #Write-Output "Cargando y procesando el archivo con los parametros de Configuracion"
+    extraeParametrosAppSettings;
 }
 
 function extraeParametrosAppSettings {
@@ -116,7 +120,7 @@ function MontandoDocker {
     try
     {
         docker start dotnet
-        docker image rm dotnet@latest -f
+        docker image rm dotnet -f
         $listBox1.Items.Add("Buscando y eliminando imagenes previas en el Contenedor")
     }
     catch
@@ -129,16 +133,18 @@ function MontandoDocker {
             }
     }
 	#sudo docker build -t dotnet -f Dockerfile .
+    Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
     docker build -t dotnet -f Dockerfile .
     $listBox1.Items.Add("Contruyendo imagen Docker desde Dockerfile")
 	#sudo docker run --restart always --name dotnet -p $PORT_HOSTNAME:80 -d dotnet
     $listBox1.Items.Add("Montando imagen dotnet en el contenedor Docker")
     try
     {
-        docker run --name "dotnet" -p ${PORT_HOSTNAME}:80 -d dotnet
+        docker run --name dotnet -p ${PORT_HOSTNAME}:80 -d dotnet
+        docker start dotnet
+        Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
         [system.Diagnostics.Process]::Start("msedge","${IP_HOSTNAME}:${PORT_HOSTNAME}")
         [void][System.Windows.Forms.Messagebox]::Show("La imagen dotnet esta montada en su Docker y la API.NET funcionando.","API.NET instalada")
-        Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
         break
     }
     catch
@@ -146,9 +152,8 @@ function MontandoDocker {
         Set-Location c:\DeclaracionesPDN\API.S1.SESEAP
         break
     }
-  cancel
-}
 
+}
 
 function GenerateForm {
 
@@ -211,8 +216,6 @@ function GenerateForm {
               if ($result -eq [System.Windows.Forms.DialogResult]::OK)
                     {
                         eliminaProyectoAPINET; 
-                        descargaProyectoAPINET;
-                        extraeParametrosAppSettings;
                         break;
                     }
               else
