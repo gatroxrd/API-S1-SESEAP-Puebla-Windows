@@ -3,3 +3,4 @@
 Invoke-WebRequest "https://raw.githubusercontent.com/gatroxrd/API-S1-SESEAP-Puebla-Windows/main/instalaSESEAP_S1_Windows.ps1" -OutFile "%userprofile%\Desktop\instalaSESEAP_S1_Windows.ps1"
 echo continuar ...
 pause > nul
+EXIT
