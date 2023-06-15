@@ -1,11 +1,11 @@
-apiName=CDH
-clientId=declaraciones_pde_cdh
-clientScopeRead=cdh
-clientScopeWrite=cdh
-clientDescription=Comisión de Derechos Humanos Puebla
+apiName=Aquixtla
+clientId=declaraciones_pde_aquixtla
+clientScopeRead=aquixtla
+clientScopeWrite=aquixtla
+clientDescription=Ayuntamiento de Aquixtla
 mongoUsername=declarausr
 mongoPassword=declarapsw
-mongoHostname=192.168.1.215
+mongoHostname=192.168.1.200
 mongoPort=27017
 mongoDatabase=declaraciones
 deploymentPort=9000
